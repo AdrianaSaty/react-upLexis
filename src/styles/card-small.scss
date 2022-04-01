@@ -1,0 +1,23 @@
+.c-card-small {
+    width: 100%;
+    height: 85px;
+    background-color: var(--light-grey);
+    border: 1px solid var(--grey);
+    text-align: center;
+    padding-top: 10px;
+    margin-right: -1px;
+
+    &.c-card-small--active {
+        width: 105%;
+        height: 90px;
+        background-color: var(--orange);
+        color: var(--white);
+        border-radius: 5px;
+        box-shadow: 5px 5px 15px var(--grey);
+        z-index: 1;
+    }
+    .c-card-small__text {
+        padding-top: 10px;
+    }
+}
+

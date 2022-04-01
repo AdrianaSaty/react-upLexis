@@ -1,0 +1,28 @@
+:root {
+  --white: #FFFFFF;
+  --orange: #FF7000;
+  --light-orange: #FF8F42;
+  --dark-orange: #FF6800;
+  --light-grey: #F9F9F9;
+  --grey: #d5d4d4;
+  --dark-grey: #696969;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font: 16px "Poppins", Arial, sans-serif;
+  color: var(--dark-grey);
+}
+
+.App {
+  padding: 0 20px;
+}
+
+button {
+  cursor: pointer;
+}
