@@ -15,33 +15,48 @@ const startMenuCards = [
   { icon: 'earth', title: 'Mídia/Internet', active: false },
   { icon: 'gem', title: 'Bens e Imóveis', active: false },
   { icon: 'person', title: 'Cadastro', active: false },
-]
+];
 
+let allProducts = [];
 
 function App() {
   const [menuCards, setMenuCards] = useState(startMenuCards);
-  const [products, setProducts] = useState([]);
+  const [productsToShow, setProductsToShow] = useState([]);
 
   useEffect(() => {
     api.get(`frontent-teste`).then(response => {
-      setProducts(response.data.products);
+      setProductsToShow(response.data.products);
+      allProducts = response.data.products;
     })
   }, []);
 
   function changeActiveButton(title) {
-    const newTasksReset = menuCards.map(task => {
+    const newProductsReset = menuCards.map(task => {
       return {
         ...task,
         active: false
       }
     })
-    const newTasks = newTasksReset.map(task => task.title === title ?
+    const newProducts = newProductsReset.map(task => task.title === title ?
       {
         ...task,
         active: true
       }
       : task);
-    setMenuCards(newTasks);
+    setMenuCards(newProducts);
+    filterProducts(title);
+
+  }
+
+  function filterProducts(title) {
+    if (title == 'Todos') {
+      setProductsToShow(allProducts)
+    } else {
+      const filteredProducts = allProducts.filter(function (product) {
+        return product.productName == title
+      })
+      setProductsToShow(filteredProducts);
+    }
   }
 
   function handleSelectOptionChange(Event) {
@@ -71,16 +86,16 @@ function App() {
       </div>
       <div className='c-showcase'>
         {
-        products.length == 0 ? <p>loading</p> :
-        products.map(card => (
-          <Card
-            key={card.productDate + card.productName}
-            icon='globe'
-            title={card.productName}
-            description={card.productDesc}
-            price={card.productPrice}
-          />
-        ))}
+          productsToShow.length == 0 ? <p>loading</p> :
+            productsToShow.map(card => (
+              <Card
+                key={card.productDate + card.productName}
+                icon='globe'
+                title={card.productName}
+                description={card.productDesc}
+                price={card.productPrice}
+              />
+            ))}
       </div>
     </div>
   );
