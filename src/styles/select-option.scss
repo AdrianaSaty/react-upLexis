@@ -1,0 +1,9 @@
+.c-select-option {
+    display: flex;
+    margin-top: 20px;
+    
+    .c-select-option__text {
+        margin-right: 10px;
+        font-weight: bold;
+    }
+}

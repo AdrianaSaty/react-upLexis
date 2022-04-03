@@ -4,7 +4,6 @@ import {
     faTree,
     faUniversity,
     faEarth,
-    faDiamond,
     faPerson,
     faBriefcase,
     faGavel,

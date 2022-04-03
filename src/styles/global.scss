@@ -26,3 +26,12 @@ body {
 button {
   cursor: pointer;
 }
+
+.c-menu {
+  display: flex;
+}
+
+.c-showcase {
+  display: flex;
+  flex-wrap: wrap;
+}
