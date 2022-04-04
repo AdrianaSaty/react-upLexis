@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Card from './components/Card';
 import CardSmall from './components/CardSmall';
 import { api } from './services/api';
@@ -22,6 +22,7 @@ let allProducts = [];
 function App() {
   const [menuCards, setMenuCards] = useState(startMenuCards);
   const [productsToShow, setProductsToShow] = useState([]);
+  const [selectedInput, setSelectedInput] = useState('');
 
   useEffect(() => {
     api.get(`frontent-teste`).then(response => {
@@ -30,11 +31,28 @@ function App() {
     })
   }, []);
 
+  useMemo(() => {
+    if( selectedInput === '') {
+      setProductsToShow(allProducts)
+    } else if (selectedInput === 'Lançamento') {
+      const orderByDate = productsToShow.sort((a, b) => {
+        return a.productDate - b.productDate;
+      });
+      setProductsToShow(orderByDate);
+    } else if (selectedInput === 'Preço') {
+      const orderByPrice = productsToShow.sort((a, b) => {
+        return a.productPrice - b.productPrice;
+      });
+      setProductsToShow(orderByPrice);
+    }
+  }, [selectedInput]);
+
   function changeActiveButton(title) {
     const newProductsReset = menuCards.map(task => {
       return {
         ...task,
         active: false
+
       }
     })
     const newProducts = newProductsReset.map(task => task.title === title ?
@@ -44,25 +62,20 @@ function App() {
       }
       : task);
     setMenuCards(newProducts);
-    filterProducts(title);
-
+    filterProductsByTitle(title);
   }
 
-  function filterProducts(title) {
-    if (title == 'Todos') {
+  function filterProductsByTitle(title) {
+    if (title === 'Todos') {
       setProductsToShow(allProducts)
     } else {
       const filteredProducts = allProducts.filter(function (product) {
-        return product.productName == title
+        return product.productName === title
       })
       setProductsToShow(filteredProducts);
     }
   }
 
-  function handleSelectOptionChange(Event) {
-    console.log('change')
-    console.log(Event)
-  }
 
   return (
     <div className="App">
@@ -79,14 +92,15 @@ function App() {
       </div>
       <div className='c-select-option'>
         <p className='c-select-option__text'>ORDENAR</p>
-        <select>
+        <select onChange={(e) => { setSelectedInput(e.target.value) }}>
+          <option></option>
           <option>Lançamento</option>
           <option>Preço</option>
         </select>
       </div>
       <div className='c-showcase'>
         {
-          productsToShow.length == 0 ? <p>loading</p> :
+          productsToShow.length === 0 ? <p>loading</p> :
             productsToShow.map(card => (
               <Card
                 key={card.productDate + card.productName}
